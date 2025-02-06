@@ -7,7 +7,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RiwayatController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -85,6 +87,8 @@ Route::middleware(['auth', 'siswa'])->group(function () {
     Route::post('/student/absen/pulang', [StudentController::class, 'storeCheckOut'])->name('absen.pulang.store');
 });
 
+Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat');
+Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal');
 Route::post('/absen/pulang', [AttendanceController::class, 'absenPulang'])->name('absen.pulang');
 Route::get('/attendance', [AttendanceController::class, 'index']);
 Route::post('/attendance', [AttendanceController::class, 'store']);

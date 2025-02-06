@@ -64,7 +64,6 @@
                             <th>Longitude</th>
                             <th>Image</th>
                             <th>Late Reason</th>
-                            <th>Early Leave Reason</th>
                             <th>Created At</th>
                             <th>Updated At</th>
                             <th>Actions</th>
@@ -146,7 +145,7 @@
 
                                 <!-- Reasons -->
                                 <td>{{ $attendance->late_reason ?? '-' }}</td>
-                                <td>{{ $attendance->early_leave_reason ?? '-' }}</td>
+
 
                                 <!-- Timestamps -->
                                 <td>{{ $attendance->created_at }}</td>

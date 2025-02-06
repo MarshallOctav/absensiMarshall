@@ -22,7 +22,6 @@ return new class extends Migration
             $table->enum('check_in_status', ['tepat waktu', 'terlambat'])->nullable();
             $table->enum('check_out_status', ['tepat waktu', 'pulang cepat'])->nullable();
             $table->text('late_reason')->nullable();
-            $table->text('early_leave_reason')->nullable();
             $table->timestamps();
         });
     }

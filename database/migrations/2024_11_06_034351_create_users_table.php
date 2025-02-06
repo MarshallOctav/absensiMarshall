@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('username')->unique()->nullable(); // untuk siswa saja
             $table->string('email')->unique()->nullable(); // untuk guru dan admin
             $table->string('password');
             $table->enum('role', ['guru', 'siswa', 'admin'])->default('siswa'); // Default role sebagai siswa

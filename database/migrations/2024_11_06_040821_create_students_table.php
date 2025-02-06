@@ -15,10 +15,10 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('gender', ['L', 'P'])->nullable();
+            $table->enum('gender', ['L', 'P']);
             $table->string('student_id')->unique();
-            $table->foreignId('class_id')->constrained('classes')->cascadeOnDelete(); // Mengacu pada tabel classes
-            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete(); // Mengacu pada tabel users
+            $table->foreignId('class_id')->constrained('classes')->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

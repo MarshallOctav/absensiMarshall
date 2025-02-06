@@ -80,7 +80,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'student_id' => 'required|string|unique:students',
             'class_id' => 'required|exists:classes,id',
-            'gender' => 'required|in:L,P', // Validasi gender
+            'gender' => 'required|in:L,P',
         ]);
 
         // Menyimpan data siswa
@@ -195,25 +195,36 @@ class AdminController extends Controller
     return view('admin.create_user', compact('classes'));
 }
 
-    public function storeUser(Request $request)
-    {
-        // Validasi dan simpan pengguna baru ke database
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+public function storeUser(Request $request)
+{
+    // Validasi input
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8|confirmed',
+        'role' => 'required|in:guru,siswa',
+    ]);
 
-        // Buat pengguna baru
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
-        ]);
-
-        // Redirect atau tampilkan pesan sukses
-        return redirect()->route('admin.manageUsers')->with('success', 'User  created successfully.');
+    // Jika role adalah siswa, cek apakah nama ada di tabel students
+    if ($validatedData['role'] === 'siswa') {
+        $student = Student::where('name', $validatedData['name'])->first();
+        if (!$student) {
+            return redirect()->back()->with('error', 'Nama siswa tidak terdaftar di sistem.');
+        }
     }
+
+    // Buat pengguna baru
+    User::create([
+        'name' => $validatedData['name'],
+        'email' => $validatedData['email'],
+        'password' => bcrypt($validatedData['password']),
+        'role' => $validatedData['role'],
+    ]);
+
+    // Redirect ke halaman manageUsers dengan pesan sukses
+    return redirect()->route('admin.manageUsers')->with('success', 'User created successfully.');
+}
+
     public function updateUser (Request $request, User $user)
 {
     $request->validate([

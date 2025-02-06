@@ -1,3 +1,18 @@
+<?php
+date_default_timezone_set('Asia/Jakarta'); // Mengatur zona waktu ke WIB
+$hour = date('H'); // Mendapatkan jam saat ini dalam format 24 jam
+
+if ($hour >= 5 && $hour < 11) {
+    $greeting = 'Selamat Pagi';
+} elseif ($hour >= 11 && $hour < 15) {
+    $greeting = 'Selamat Siang';
+} elseif ($hour >= 15 && $hour < 18) {
+    $greeting = 'Selamat Sore';
+} else {
+    $greeting = 'Selamat Malam';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -178,6 +193,8 @@
         table td {
             color: #333;
         }
+
+
     </style>
     <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -206,7 +223,7 @@
             <!-- Welcome Section -->
             <div class="welcome" style="display: flex; justify-content: space-between; align-items: center;">
                 <div style="text-align: left;">
-                    <h4>Selamat Sore</h4>
+                    <h4><?php echo $greeting?><h4>
                     <h1>{{ auth()->user()->name }}</h1>
                 </div>
 
@@ -228,10 +245,10 @@
                     <i class="fas fa-calendar-alt" aria-hidden="true" style="background-color: #4e73df;"></i>
                     <span>Jadwal</span>
                 </a>
-                <a href="/nilai" class="menu-item">
+                <a href="/riwayat" class="menu-item">
                     <i class="fas fa-pencil-alt
                     " aria-hidden="true" style="background-color: #fab202;"></i>
-                    <span>Nilai</span>
+                    <span>Riwayat</span>
                 </a>
             </div>
         </div>

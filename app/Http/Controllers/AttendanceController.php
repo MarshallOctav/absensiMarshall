@@ -45,7 +45,7 @@ class AttendanceController extends Controller
 
         try {
             // Ambil kelas siswa
-            $student = Student::find(auth()->id()); // Ganti ini sesuai dengan cara Anda mendapatkan ID siswa
+            $student = Student::find(auth()->id());
             $class = ClassModel::find($student->class_id);
 
             // Simpan data absensi ke database
@@ -56,10 +56,10 @@ class AttendanceController extends Controller
                 'latitude' => $validated['latitude'],
                 'longitude' => $validated['longitude'],
                 'image' => $request->file('image')->store('attendance_images', 'public'),
-                'check_in_status' => now()->greaterThan($class->start_time) ? 'terlambat' : 'tepat waktu', // Cek status keterlambatan
+                'check_in_status' => now()->greaterThan($class->start_time) ? 'terlambat' : 'tepat waktu',
                 'late_reason' => $request->late_reason, // Simpan alasan keterlambatan jika ada
-                'start_time' => $class->start_time, // Ambil start_time dari kelas
-                'end_time' => $class->end_time, // Ambil end_time dari kelas
+                'start_time' => $class->start_time,
+                'end_time' => $class->end_time,
             ]);
 
             return response()->json(['success' => true, 'message' => 'Absensi berhasil dicatat.']);
@@ -68,6 +68,7 @@ class AttendanceController extends Controller
             return response()->json(['success' => false, 'error' => 'Terjadi kesalahan. Silakan coba lagi.'], 500);
         }
     }
+
 
     public function absenPulang(Request $request)
     {
