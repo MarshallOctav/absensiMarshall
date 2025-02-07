@@ -15,16 +15,11 @@ class AdminController extends Controller
 
     public function index()
     {
-        // Ambil data kelas beserta jumlah siswa
         $classes = ClassModel::withCount('students')->get();
-
-        // Kapasitas per kelas
+        $attendances = Attendance::all();
         $maxClassCapacity = 30;
 
-        return view('admin.dasboard', [
-            'classes' => $classes,
-            'maxClassCapacity' => $maxClassCapacity
-        ]);
+        return view('admin.dashboard', compact('classes', 'attendances', 'maxClassCapacity'));
     }
 
     public function manageStudents(Request $request)

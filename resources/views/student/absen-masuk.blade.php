@@ -5,11 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Absensi</title>
     <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #4e73df;
+            --accent-color: #4f46e5;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
         body {
-            background-color: #f6f7fb;
-            color: #333;
-            position: relative;
+            background: linear-gradient(135deg, var(--light-color) 50%, #e2e8f0 100%);
             min-height: 100vh;
+            color: var(--dark-color);
         }
 
         body::before {
@@ -24,10 +38,28 @@
         }
 
         .header {
-            background-color: #4e73df;
-            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 2rem 1rem;
             color: white;
-            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: -10%;
+            width: 120%;
+            height: 60px;
+            background: var(--light-color);
+            transform: rotate(-3deg);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease;
         }
 
         .absen {
@@ -113,10 +145,6 @@
             margin-top: 10px;
         }
 
-        .modal-content button:hover {
-            background-color: #3e5ca5;
-        }
-
         .modal-content button:disabled {
             background-color: #d1d1d1;
             cursor: not-allowed;
@@ -127,7 +155,7 @@
 <body>
     <div class="header">
         <h1>
-            <i class="fas fa-calendar-alt calendar-icon"></i>
+            <i class="fas fa-calender-alt calender-icon"></i>
             Absen Masuk
         </h1>
     </div>
@@ -163,7 +191,7 @@
         const startBtn = document.getElementById('start-btn');
         const absenMasukBtn = document.getElementById('absenMasukBtn');
         let stream = null;
-        let classStartTime = '08:00';  // Ganti dengan waktu start_time dari server
+        let classStartTime = '12:00';  // Ganti dengan waktu start_time dari server
 
         // Aktifkan Webcam
         startBtn.addEventListener('click', async () => {

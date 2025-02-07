@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Absensi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.5/locales/id.js'></script>
     <style>
         :root {
             --primary-color: #4e73df;
@@ -31,7 +34,6 @@
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             padding: 2rem 1rem;
             color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
         }
@@ -59,49 +61,31 @@
             padding: 0 1rem;
         }
 
-        .schedule-card {
+        .calendar-container {
+            max-width: 900px;
+            margin: 3rem auto;
             background: white;
-            border-radius: 20px;
             padding: 2rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-                        0 4px 6px -4px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        .schedule-card:hover {
-            transform: translateY(-5px);
+        .legend {
+            margin-top: 20px;
+            font-size: 1rem;
         }
 
-        .schedule-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
         }
 
-        img {
-            width: 100%;
-            height: auto;
-            border-radius: 15px;
-            margin-top: 1.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        img:hover {
-            transform: scale(1.02);
-            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.2);
-        }
-
-        .pencil-icon {
-            font-size: 2rem;
-            margin-right: 1rem;
-            animation: bounce 2s infinite;
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            margin-right: 10px;
+            border-radius: 50%;
         }
 
         @keyframes fadeInUp {
@@ -115,25 +99,9 @@
             }
         }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-15px);
-            }
-            60% {
-                transform: translateY(-7px);
-            }
-        }
-
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
-            }
-
-            .schedule-card {
-                padding: 1.5rem;
             }
         }
     </style>
@@ -145,9 +113,45 @@
             Riwayat Absensi
         </h1>
     </div>
-
     <div class="schedule-container">
-        
+        <div class="calendar-container">
+            <div id='calendar'></div>
+            <div class="legend">
+                <h6>Keterangan:</h6>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #4CAF50;"></div>
+                    <span>Tepat Waktu</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #F44336;"></div>
+                    <span>Terlambat</span>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'id',
+                events: [
+                    @foreach($attendances as $attendance)
+                        {
+                            start: '{{ $attendance->date }}',
+                            color: '{{ $attendance->check_in_status == "Tepat Waktu" ? "#4CAF50" : ($attendance->check_in_status == "Terlambat" ? "#FFEB3B" : "#F44336") }}'
+                        },
+                    @endforeach
+                ],
+                eventRender: function(info) {
+                    // Ensure the date number is visible
+                    info.el.style.color = 'black'; // Set the text color to black
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
 </body>
 </html>
